@@ -95,4 +95,19 @@ public class TripsController : ControllerBase
         useCase.Execute(tripId, activityId);
         return NoContent();
     }
+
+    [HttpPut]
+    [Route("{tripId}/activity/{activityId}/edit")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status404NotFound)]
+    public IActionResult EditActivity(
+        [FromRoute] Guid tripId,
+        [FromRoute] Guid activityId,
+        [FromBody] RequestEditActivityJson request)
+    {
+        var useCase = new EditActivityUseCase();
+        var response = useCase.Execute(tripId, activityId, request);
+        return Ok(response);
+    }
 }
